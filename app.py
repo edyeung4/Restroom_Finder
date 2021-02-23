@@ -16,8 +16,5 @@ def root():
 # Listener
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 9112)) 
-    #                                 ^^^^
-    #              You can replace this number with any valid port
-    
+    port = int(os.environ.get('PORT', 56124)) 
     app.run(port=port) 
