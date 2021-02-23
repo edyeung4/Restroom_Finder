@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--
+    # Citation for Bootstrap template:
+    # Date: January, 2021
+    # Based on: https://getbootstrap.com/docs/4.0/examples/cover/
+     -->
+
+    <title>Search and Modify Reviews</title>
+  </head>
+  <body class='text-center'>
+    <div class="container d-flex h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">Restroom Finder</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="customer_index.html">View</a>
+            <a class="nav-link" href="customer_add.html">Add</a>
+            <a class="nav-link" href="index.html">Logout</a>
+          </nav>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        <h1 class="cover-heading">Restrooms Reviews</h1>
+        <div class="input-group" >
+         <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
+         <div class="input-group-btn" >
+          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Category</span> <span class="caret" >&nbsp;</span></button>
+          <div class="dropdown-menu dropdown-menu-right" >
+             <div class="form-check">
+               <input class="form-check-input" type="radio" name="searchCategory" id="reviewID" value="reviewID" checked>
+               <label class="form-check-label" for="reviewID">Review ID</label>
+             </div>
+
+             <div class="form-check">
+               <input class="form-check-input" type="radio" name="searchCategory" id="restroomID" value="restroomID" checked>
+               <label class="form-check-label" for="restroomID">Restroom ID</label>
+             </div>
+             
+             <div class="form-check">
+               <input class="form-check-input" type="radio" name="searchCategory" id="userID" value="userID">
+               <label class="form-check-label" for="restroomStreet">User ID</label>
+             </div>
+
+             <div class="form-check">
+               <input class="form-check-input" type="radio" name="searchCategory" id="Cleanliness" value="Cleanliness">
+               <label class="form-check-label" for="restroomCity">Cleanliness</label>
+             </div>
+          </div>
+          <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
+         </div>
+        </div>
+        <p class="lead">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Address</th>
+                <th scope="col">Overall Rating</th>
+                <th scope="col">Cleanliness</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Restroom ID</th>
+                <th scope="col">User ID</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <th scope="row">1</th>
+                
+                <td><input align="center" type="text" value="1234 Fake St., Charlotte, NC, US" disabled="disabled"></td>
+
+                
+                <td><input align="center" type="text" value="4.5" disabled="disabled"></td>
+                <td>
+                  <select align="center" id="inputState" class="form-control" disabled="disabled">
+                    <option>Choose...</option>
+                    <option>Dirty</option>
+                    <option>Mediocre</option>
+                    <option selected>Pristine</option>
+                  </select>
+                </td>
+                <td><input align="center" type="text" value="Bathroom was clean and well kept" disabled="disabled"></td>
+                <td>1/28/21</td>
+                <td>4</td>
+                <td>1</td>
+                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
+                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
+              </tr>
+
+              <tr>
+                <th scope="row">2</th>
+                <td><input align="center" type="text" value="5678 Dreamville Ln., Portland, OR, US" disabled="disabled"></td>
+                <td><input align="center" type="text" value="3" disabled="disabled"></td>
+                <td>
+                  <select align="center" id="inputState" class="form-control" disabled="disabled">
+                    <option>Choose...</option>
+                    <option>Dirty</option>
+                    <option selected>Mediocre</option>
+                    <option>Pristine</option>
+                  </select>
+                </td>
+                <td><input align="center" type="text" value="3/5 needed to pay to use the restrooms" disabled="disabled"></td>
+                <td>11/23/20</td>
+                <td>5</td>
+                <td>2</td>
+                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
+                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
+              </tr>
+
+              <tr>
+                <th scope="row">3</th>
+                <td><input align="center" type="text" value="2468 Fantasy Ave., San Francisco, CA, US" disabled="disabled"></td>
+                <td><input align="center" type="text" value="<1" disabled="disabled"></td>
+                <td>
+                  <select align="center" id="inputState" class="form-control" disabled="disabled">
+                    <option>Choose...</option>
+                    <option selected>Dirty</option>
+                    <option>Mediocre</option>
+                    <option>Pristine</option>
+                  </select>
+                </td>
+                <td><input align="cetner" type="text" value="Restroom was" disabled="disabled"></td>
+                <td>1/03/21</td>
+                <td>6</td>
+                <td>3</td>
+                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
+                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+      </main>
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </footer>
+    </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="../js/table_edit.js"></script>
+  </body>
+</html>
