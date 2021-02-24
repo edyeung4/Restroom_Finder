@@ -31,49 +31,50 @@ INSERT INTO Users (firstName, lastName, emailAddress) VALUES
 -- Query to view Restrooms based on provided search category
 -- $ used for variable placeholder of data processed by backend
 -- Initial view of employee_index.html after logging in
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
+ORDER BY 1 asc;
 -- Filtering restrooms based on ID
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
-WHERE rr.id = $restroomID
+WHERE rr.restroomID = $restroomID
 -- Filtering restrooms based on Street
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
 WHERE l.street = $Street
 -- Filtering restrooms based on City
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = -rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
 WHERE l.city = $City
 -- Filtering restrooms based on State
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
 WHERE l.state = $State
 -- Filtering restrooms based on Country
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
 WHERE l.country = $Country
 -- Filtering restrooms based on Free
-SELECT rr.id, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
-    rr.openHour, rr.closeHour, rr.free, re.updatedAt, re.comments, re.employeeID
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,
+    rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID
 FROM Restrooms rr
     JOIN Locations l on l.locationID = rr.locationID
     JOIN RestroomsEmployees re on re.restroomID = rr.restroomID
