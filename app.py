@@ -7,11 +7,33 @@ import os
 app = Flask(__name__)
 
 # Routes 
+@app.route('/index')
+def index():
+    '''True URL of homepage'''
+    print('Welcome to the homepage.')
+    return render_template('index.html')
 
 @app.route('/')
 def root():
     '''Return the homepage'''
-    return render_template('index.html')
+    print('Root index hit. Redirecting to index.html...')
+    return redirect('/index')
+
+@app.route('/employee_login')
+def emp_login():
+    '''Login page for employees'''
+    print('Accessing the login portal for employees.')
+    return render_template('employee_login.html')
+
+@app.route('/employee_index')
+def emp_index():
+    '''Employee login landing page. Displays data from Restrooms, RestroomEmployees,
+    and Locations'''
+    print('Accessing the employee_index landing page.')
+
+    return render_template('employee_index.html')
+
+
 
 # Listener
 
