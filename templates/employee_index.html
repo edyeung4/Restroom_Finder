@@ -85,69 +85,38 @@
                 <th scope="col">Open Hour</th>
                 <th scope="col">Close Hour</th>
                 <th scope="col">Free</th>
+                <th scope="col">Last Inspected</th>
                 <th scope="col">Comments</th>
-                <th scope="col">Last Updated</th>
                 <th scope="col">Employee ID</th>
               </tr>
             </thead>
 
             <tbody>
-
+	    <!-- Iterate over results returned from query -->
+	    {% for restroom in results %}
               <tr>
-                <th scope="row">4</th>
-                <td><input align="center" type="text" value="1234 Fake St., Charlotte, NC, US" disabled="disabled"></td>
-                <td><input align="center" type="time" value="09:00" disabled="disabled"></td>
-                <td><input align="center" type="time" value="23:00" disabled="disabled"></td>
+                <th scope="row">{{restroom[0]}}</th>
+                <td><input align="center" type="text" value="{{restroom[1]}}" disabled="disabled"></td>
+                <td><input align="center" type="time" value={{restroom[2]}} disabled="disabled"></td>
+                <td><input align="center" type="time" value={{restroom[3]}} disabled="disabled"></td>
                 <td>
                   <select align="center" id="inputFree" class="form-control" disabled="disabled">
-                    <option selected>T</option>
-                    <option>F</option>
+                    {% if restroom[4] == 1 %}
+		    	<option selected>T</option>
+			<option>F</option>
+                    {% else %}
+			<option>T</option>
+			<option selected>F</option>
+		    {% endif %}
                   </select>
                 </td>
-                <td><input align="center" type="text" value=" " disabled="disabled"></td>
-                <td>1/28/21</td>
-                <td>1</td>
+                <td><input align="center" type="text" value={{restroom[5]}} disabled="disabled"></td>
+                <td>{{restroom[6]}}</td>
+                <td>{{restroom[7]}}</td>
                 <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
                 <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
               </tr>
-
-
-              <tr>
-                <th scope="row">5</th>
-                <td><input align="center" type="text" value="5678 Dreamville Ln., Portland, OR, US" disabled="disabled"></td>
-                <td><input align="center" type="time" value="06:00" disabled="disabled"></td>
-                <td><input align="center" type="time" value="18:00" disabled="disabled"></td>
-                <td>
-                  <select align="center" id="inputFree" class="form-control" disabled="disabled">
-                    <option>T</option>
-                    <option selected>F</option>
-                  </select>
-                </td>
-                <td><input align="center" type="text" value=" " disabled="disabled"></td>
-                <td>11/23/20</td>
-                <td>2</td>
-                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
-                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
-              </tr>
-
-              <tr>
-                <th scope="row">6</th>
-                <td><input align="center" type="text" value="2468 Fantasy Ave., San Francisco, CA, US" disabled="disabled"></td>
-                <td><input align="center" type="time" value="10:00" disabled="disabled"></td>
-                <td><input align="center" type="time" value="20:00" disabled="disabled"></td>
-                <td>
-                  <select align="center" id="inputFree" class="form-control" disabled="disabled">
-                    <option selected="">T</option>
-                    <option>F</option>
-                  </select>
-                </td>
-                <td><input align="center" type="text" value=" " disabled="disabled"></td>
-                <td>1/03/21</td>
-                <td>3</td>
-                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
-                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
-              </tr>
-
+	    {% endfor %}
             </tbody>
           </table>
         </p>
