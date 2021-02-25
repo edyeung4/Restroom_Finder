@@ -116,8 +116,11 @@ VALUES ((SELECT restroomID FROM Restrooms JOIN Locations ON Locations.locationID
 
 
 -- Get all reviews table data to populate "view tab" (customer_index.html)
-SELECT reviewID, overallRating, cleanliness, comment, createdAt, restroomID, userID
-FROM reviews
+SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, 
+    rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID
+FROM Restrooms rr
+    JOIN Locations l ON l.locationID = rr.locationID
+    JOIN Reviews rv ON rv.restroomID = rr.restroomID   
  
 -- Customer_index.html Delete functionality 
 DELETE FROM reviews Where reviewID = $ID_selected_from_customer_index_page

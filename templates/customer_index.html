@@ -24,9 +24,9 @@
         <div class="inner">
           <h3 class="masthead-brand">Restroom Finder</h3>
           <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="customer_index.html">View</a>
-            <a class="nav-link" href="customer_add.html">Add</a>
-            <a class="nav-link" href="index.html">Logout</a>
+            <a class="nav-link active" href="/customer_index">View</a>
+            <a class="nav-link" href="/customer_add">Add</a>
+            <a class="nav-link" href="/index">Logout</a>
           </nav>
         </div>
       </header>
@@ -78,31 +78,43 @@
               </tr>
             </thead>
             <tbody>
-
+            {% for reviews in results %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{reviews[0]}}</th>
                 
-                <td><input align="center" type="text" value="1234 Fake St., Charlotte, NC, US" disabled="disabled"></td>
+                <td><input align="center" type="text" value="{{reviews[1]}}" disabled="disabled"></td>
 
                 
-                <td><input align="center" type="text" value="4.5" disabled="disabled"></td>
+                <td><input align="center" type="text" value={{reviews[2]}} disabled="disabled"></td>
                 <td>
                   <select align="center" id="inputState" class="form-control" disabled="disabled">
+                    {% if reviews[3] == 'Pristine' %}
                     <option>Choose...</option>
                     <option>Dirty</option>
                     <option>Mediocre</option>
                     <option selected>Pristine</option>
+                    {% elif reviews[3] == 'Dirty' %}
+                    <option>Choose...</option>
+                    <option selected>Dirty</option>
+                    <option>Mediocre</option>
+                    <option >Pristine</option>
+                    {% else %}
+                    <option>Choose...</option>
+                    <option>Dirty</option>
+                    <option selected>Mediocre</option>
+                    <option>Pristine</option>
+                    {% endif %}
                   </select>
                 </td>
-                <td><input align="center" type="text" value="Bathroom was clean and well kept" disabled="disabled"></td>
-                <td>1/28/21</td>
-                <td>4</td>
-                <td>1</td>
+                <td><input align="center" type="text" value="{{reviews[4]}}" disabled="disabled"></td>
+                <td>{{reviews[5]}}</td>
+                <td>{{reviews[6]}}</td>
+                <td>{{reviews[7]}}</td>
                 <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
                 <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
               </tr>
 
-              <tr>
+              <!-- <tr>
                 <th scope="row">2</th>
                 <td><input align="center" type="text" value="5678 Dreamville Ln., Portland, OR, US" disabled="disabled"></td>
                 <td><input align="center" type="text" value="3" disabled="disabled"></td>
@@ -140,7 +152,8 @@
                 <td>3</td>
                 <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
                 <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
-              </tr>
+              </tr> -->
+            {% endfor %}
             </tbody>
           </table>
         </p>
