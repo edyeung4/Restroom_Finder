@@ -38,9 +38,40 @@ def emp_index():
 @app.route('/employee_add', methods=['GET','POST'])
 def emp_add():
     '''Employee add page. If a GET request, then simply return the page to the user. If the page is reached via an HTTP POST, then collect the data provided and INSERT the new Restroom and appropriate data.'''
+    db_connection = connect_to_database()
+
     if request.method == 'POST':
-        pass
-    return render_template('employee_add.html')
+        open_hour = request.form["openTime"]
+        close_hour = request.form["closeTime"]
+        free = request.form["free"]
+        comments = request.form["comments"]
+        if request.form["address2"] != '':
+            street = request.form["address"] + ' ' + request.form["address2"]
+        else:
+            street = request.form["address"]
+        city = request.form["city"]
+        state = request.form["state"]
+        country = request.form["country"]
+        first_name = request.form["firstName"]
+        last_name = request.form["lastName"]
+        email = request.form["email"]
+        # Need to insert into Locations first
+        query = 'INSERT INTO Locations (street, city, state, country) VALUES (%s, %s, %s, %s)'
+        data = (street, city, state, country)
+        execute_query(db_connection, query, data)
+        
+        # Next insert into Restrooms
+        query = 'INSERT INTO Restrooms (locationID, openHour, closeHour, free) VALUES ((SELECT locationID FROM Locations WHERE street = %s AND city = %s AND state = %s AND country = %s), %s, %s, %s)'
+        data = (street, city, state, country, open_hour, close_hour, free)
+        execute_query(db_connection, query, data)
+    
+        # Finally insert into RestroomsEmployees
+        query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees where firstName = %s AND lastName = %s AND emailAddress = %s), %s, CURRENT_TIMESTAMP())'
+        data = (first_name, last_name, email, comments)
+        execute_query(db_connection, query,data)    
+        return redirect('/employee_index', code=302)
+    else:
+        return render_template('/employee_add.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 56124)) 
