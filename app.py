@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from database.db_connector import connect_to_database, execute_query
 import os
 
@@ -25,15 +25,68 @@ def emp_login():
     print('Accessing the login portal for employees.')
     return render_template('employee_login.html')
 
-@app.route('/employee_index')
+#@app.route('/api/restroom_search', methods=['GET','POST'])
+#def rr_search():
+#    if request.method == 'POST':
+#        print('POST received.')
+#        search_data = request.form.get('search')
+#        return jsonify(search_data)
+#    return "thanks!"
+
+@app.route('/employee_index', methods=['GET','POST'])
 def emp_index():
-    '''Employee login landing page. Displays data from Restrooms, RestroomEmployees,
-    and Locations'''
-    print('Accessing the employee_index landing page.')
+    if request.method == 'POST':
+        print('POST received.')
+        print()
+        print('SEARCH: ' + request.form['search'])
+        print('CATEGORY: ' + request.form['restroomSearch'])
+        print()
+        db_connection = connect_to_database()
+	# if request.form['search'] is empty, return all
+        if request.form['search'] == '':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID ORDER BY 1 asc;"
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('/employee_index.html', results=results)
+        # otherwise, use category for WHERE clause filtering on search text   
+        search = request.form['search']
+        category = request.form['restroomSearch']
+        
+        if category == 'restroomID':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr  JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID WHERE rr.restroomID = " + search + "  ORDER BY 1 asc;"
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('employee_index.html', results=results) 
+
+        if category == 'street':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr  JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID WHERE l.street like '" + search + "' ORDER BY 1 asc;"
+            print(query)
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('employee_index.html', results=results)
+
+        if category == 'city':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr  JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID WHERE l.city like '" + search + "' ORDER BY 1 asc;"
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('employee_index.html', results=results)
+
+        if category == 'state':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr  JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID WHERE l.state like '" + search + "' ORDER BY 1 asc;"
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('employee_index.html', results=results)
+
+        if category == 'country':
+            query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr  JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID WHERE l.country like '" + search + "'  ORDER BY 1 asc;"
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('employee_index.html', results=results)
+
+    # GET request returns all rows of Restrooms
     db_connection = connect_to_database()
     query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID ORDER BY 1 asc;"
     results = execute_query(db_connection, query).fetchall()
-    print(results)
+    #print(results)
     return render_template('employee_index.html', results=results)
 
 @app.route('/employee_add', methods=['GET','POST'])
@@ -98,7 +151,7 @@ def cust_add():
     return render_template('customer_add.html')
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 56124)) 
+    port = int(os.environ.get('PORT', 56123)) 
     app.run(port=port)
 
     
