@@ -122,6 +122,14 @@ FROM Restrooms rr
     JOIN Locations l ON l.locationID = rr.locationID
     JOIN Reviews rv ON rv.restroomID = rr.restroomID   
  
+-- Get Restroom ID, location as selectable reviews that have not been reviewed for customer_add.html
+SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address
+FROM Restrooms rr
+    JOIN Locations l ON l.locationID = rr.locationID
+    
+
+
+
 -- Customer_index.html Delete functionality 
 DELETE FROM reviews Where reviewID = $ID_selected_from_customer_index_page
  
@@ -153,6 +161,7 @@ FROM reviews
 WHERE cleanliness = $cleanliness_from_customer_index_search
  
 -- Customer_add.html Submit Review functionality
-INSERT INTO reviews (overallRating, cleanliness, comment, createdAt)
-VALUES ($ratingInput, $cleanlinessInput, $commentInput, CURDATE());
+INSERT INTO reviews (overallRating, cleanliness, comment, createdAt, restroomID, userID)
+VALUES (%s, %s, %s, CURDATE(), %s, %s)
+
 
