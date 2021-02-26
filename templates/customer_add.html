@@ -31,20 +31,23 @@
 
       <main role="main" class="inner cover">
         <h1 class="cover-heading">Add Restroom Reviews</h1>
-        <form>
+        <form method="POST" action="/customer_add" role="form" name="customer_add_form">
+          
           <div class="form-group">
-            <label for="inputState">Select Restroom ID</label>
-            <select id="inputState" class="form-control">
+            
+            <label for="restroomID">Select Restroom Address</label>
+            <select id="inputRestroomID" name="restroomID" class="form-control">
               <option selected>Choose...</option>
-              <option>ID - 4, Address - 1234 Fake St., Charlotte, NC, US</option>
-              <option>ID - 5, Address - 5678 Dreamville Ln., Portland, OR, US</option>
-              <option>ID - 6, Address - 2468 Fantasy Ave., San Francisco, CA, US</option>
+              {% for restrooms in results %}
+              <option value={{restrooms[0]}}>{{restrooms[1]}}</option>
+              {% endfor %}
             </select>
+            
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="inputState">Overall Rating</label>
-              <select id="inputState" class="form-control">
+              <label for="overallRating">Overall Rating</label>
+              <select id="inputOverallRating" name="overallRating" class="form-control">
                 <option selected>Choose 1-5</option>
                 <option>1</option>
                 <option>2</option>
@@ -53,13 +56,10 @@
                 <option>5</option>
               </select>
             </div>
-            <!-- <div class="form-group col-md-6">
-              <label for="inputEmail4">Overall Rating</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Rating 1-5">
-            </div> -->
+
             <div class="form-group col-md-6">
-              <label for="inputState">Cleanliness</label>
-              <select id="inputState" class="form-control">
+              <label for="cleanliness">Cleanliness</label>
+              <select id="inputCleanliness" name="cleanliness" class="form-control">
                 <option selected>Choose...</option>
                 <option>Dirty</option>
                 <option>Mediocre</option>
@@ -68,115 +68,15 @@
             </div>
           </div>
 
-          <!-- <div class="form-group">
-            <label for="inputAddress">Restroom Address</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputCity">City</label>
-              <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-              <label for="inputState">State</label>
-              <select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="form-group col-md-2">
-              <label for="inputZip">Country</label>
-              <input type="text" class="form-control" id="Country">
-            </div>
-          </div> -->
-          <!-- <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
-              <label class="form-check-label" for="gridCheck">
-                Check me out
-              </label>
-            </div>
-          </div> -->
           
           <div class="form-group">
-            <label for="exampleFormControlTextarea1">Comments</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="comments">Comments</label>
+            <textarea class="form-control" name="comments" id="comments" rows="3"></textarea>
           </div>
           <button type="submit" class="btn btn-secondary btn-lg">Submit Review</button>
+          
         </form>
-        <!-- <div class="input-group" >
-         <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
-         <div class="input-group-btn" >
-          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Category</span> <span class="caret" >&nbsp;</span></button>
-          <div class="dropdown-menu dropdown-menu-right" >
-             <ul class="category_filters" >
-              <li >
-               <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" ><label for="all" >All</label>
-              </li>
-              <li >
-               <input type="radio" name="radios" id="Design" value="Design" ><label class="category-label" for="Design" >Design</label>
-              </li>
-              <li >
-               <input type="radio" name="radios" id="Marketing" value="Marketing" ><label class="category-label" for="Marketing" >Marketing</label>
-              </li>
-              <li >
-               <input type="radio" name="radios" id="Programming" value="Programming" ><label class="category-label" for="Programming" >Programming</label>
-              </li>
-              <li >
-               <input type="radio" name="radios" id="Sales" value="Sales" ><label class="category-label" for="Sales" >Sales</label>
-              </li>
-              <li >
-               <input type="radio" name="radios" id="Support" value="Support" ><label class="category-label" for="Support" >Support</label>
-              </li>
-             </ul>
-          </div>
-          <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
-         </div>
-        </div>
-        <p class="lead">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Overall Rating</th>
-                <th scope="col">Cleanliness</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Date Created</th>
-                <th scope="col">Restroom ID</th>
-                <th scope="col">User ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>4.5</td>
-                <td>Pristine</td>
-                <td>Bathroom was clean and well kept</td>
-                <td>1/28/21</td>
-                <td>101</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>3</td>
-                <td>Mediocre</td>
-                <td>3/5 needed to pay to use the restrooms</td>
-                <td>11/23/20</td>
-                <td>204</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>1</td>
-                <td>Dirty</td>
-                <td>Restroom was </td>
-                <td>1/03/21</td>
-                <td>423</td>
-                <td>3</td>
-              </tr>
-            </tbody>
-          </table>
-        </p> -->
+
       </main>
 
       <footer class="mastfoot mt-auto">

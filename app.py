@@ -33,7 +33,6 @@ def emp_index():
     db_connection = connect_to_database()
     query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address,rr.openHour, rr.closeHour, rr.free, re.inspectedAt, re.comments, re.employeeID FROM Restrooms rr JOIN Locations l on l.locationID = rr.locationID JOIN RestroomsEmployees re on re.restroomID = rr.restroomID ORDER BY 1 asc;"
     results = execute_query(db_connection, query).fetchall()
-    print(results)
     return render_template('employee_index.html', results=results)
 
 @app.route('/employee_add', methods=['GET','POST'])
@@ -70,6 +69,7 @@ def emp_add():
         query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees where firstName = %s AND lastName = %s AND emailAddress = %s), %s, CURRENT_TIMESTAMP())'
         data = (first_name, last_name, email, comments)
         execute_query(db_connection, query,data)    
+
         return redirect('/employee_index', code=302)
     else:
         return render_template('/employee_add.html')
@@ -93,9 +93,29 @@ def cust_index():
 @app.route('/customer_add', methods=['GET','POST'])
 def cust_add():
     '''Customer add page. If GET request, returns the page to the user, if POST request, collect data from form and INSERT to database '''
+    db_connection = connect_to_database()
     if request.method == 'POST':
-        pass
-    return render_template('customer_add.html')
+        print('Customer-add.html POST request')
+        restroom_id = request.form["restroomID"]
+        overall_rating = request.form["overallRating"]
+        cleanliness = request.form["cleanliness"]
+        comments = request.form["comments"]
+        print("restroomID =", restroom_id)
+        print("overallRating =", overall_rating)
+        print("cleanliness =", cleanliness)
+        print("comments =", comments)
+
+        query = 'INSERT INTO Reviews (overallRating, cleanliness, comment, createdAt, restroomID, userID) VALUES (%s, %s, %s, CURDATE(), %s, 1)'
+        data =(overall_rating, cleanliness, comments, restroom_id)
+        execute_query(db_connection, query, data)
+        # return render_template('customer_add.html')
+        return render_template('customer_add_confirm.html')
+    else:
+        print('Customer_add.html GET request')
+        query = "SELECT rr.restroomID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID "
+        results = execute_query(db_connection, query).fetchall()
+        # print(results)
+        return render_template('customer_add.html', results=results)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 56124)) 
