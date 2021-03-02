@@ -133,14 +133,57 @@ def cust_login():
     print('Accessing the login portal for customers') 
     return render_template('customer_login.html')   
 
-@app.route('/customer_index')
+@app.route('/customer_index', methods=['GET', 'POST'])
 def cust_index():
     '''Customer landing page, displays data from reviews database table '''
     print('Accessing the customer_index landing page')
+    
+    if request.method == 'POST':
+        print('POST received.')
+        print()
+        print('SEARCH: ' + request.form['search'])
+        print('CATEGORY: ' + request.form['restroomSearch'])
+        print()
+        db_connection = connect_to_database()
+	    # if request.form['search'] is empty, return all
+        if request.form['search'] == '':
+            query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID "
+            results = execute_query(db_connection, query).fetchall()
+            # print("blank search field")
+            return render_template('/customer_index.html', results=results)
+        # otherwise, use category for WHERE clause filtering on search text   
+        search = request.form['search']
+        category = request.form['restroomSearch']
+        
+        if category == 'reviewID':
+            query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID WHERE rv.reviewID = " + search;
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('customer_index.html', results=results) 
+
+        if category == 'restroomID':
+            query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID WHERE rr.restroomID = " + search;
+            # print(query)
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('customer_index.html', results=results)
+
+        if category == 'userID':
+            query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID WHERE rv.userID = " + search;
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            return render_template('customer_index.html', results=results)
+
+        if category == 'cleanliness':
+            query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID WHERE rv.cleanliness = '" + search + "';"
+            #data = (search)
+            results = execute_query(db_connection, query).fetchall()
+            # print(results)
+            return render_template('customer_index.html', results=results)
+
     db_connection = connect_to_database()
     query = "SELECT rv.reviewID, concat(l.street, ', ', l.city, ', ', l.state, ', ', l.country ) as Address, rv.overallRating, rv.cleanliness, rv.comment, rv.createdAt, rv.restroomID, rv.userID FROM Restrooms rr JOIN Locations l ON l.locationID = rr.locationID JOIN Reviews rv ON rv.restroomID = rr.restroomID "
     results = execute_query(db_connection, query).fetchall()
-    print(results)
+    # print(results)
     return render_template('customer_index.html', results=results)
 
 @app.route('/customer_add', methods=['GET','POST'])
@@ -171,7 +214,7 @@ def cust_add():
         return render_template('customer_add.html', results=results)
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 56123)) 
+    port = int(os.environ.get('PORT', 56124)) 
     app.run(port=port)
 
     

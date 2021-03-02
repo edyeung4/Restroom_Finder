@@ -33,34 +33,36 @@
 
       <main role="main" class="inner cover">
         <h1 class="cover-heading">Restrooms Reviews</h1>
+        <form action="/customer_index" method="POST">
         <div class="input-group" >
-         <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
+         <input id="table_filter" type="text" name='search'class="form-control" aria-label="Text input with segmented button dropdown" >
          <div class="input-group-btn" >
           <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Category</span> <span class="caret" >&nbsp;</span></button>
           <div class="dropdown-menu dropdown-menu-right" >
              <div class="form-check">
-               <input class="form-check-input" type="radio" name="searchCategory" id="reviewID" value="reviewID" checked>
+               <input class="form-check-input" type="radio" name="restroomSearch" id="reviewID" value="reviewID" checked>
                <label class="form-check-label" for="reviewID">Review ID</label>
              </div>
 
              <div class="form-check">
-               <input class="form-check-input" type="radio" name="searchCategory" id="restroomID" value="restroomID" checked>
+               <input class="form-check-input" type="radio" name="restroomSearch" id="restroomID" value="restroomID">
                <label class="form-check-label" for="restroomID">Restroom ID</label>
              </div>
              
              <div class="form-check">
-               <input class="form-check-input" type="radio" name="searchCategory" id="userID" value="userID">
-               <label class="form-check-label" for="restroomStreet">User ID</label>
+               <input class="form-check-input" type="radio" name="restroomSearch" id="userID" value="userID">
+               <label class="form-check-label" for="userID">User ID</label>
              </div>
 
              <div class="form-check">
-               <input class="form-check-input" type="radio" name="searchCategory" id="Cleanliness" value="Cleanliness">
-               <label class="form-check-label" for="restroomCity">Cleanliness</label>
+               <input class="form-check-input" type="radio" name="restroomSearch" id="cleanliness" value="cleanliness">
+               <label class="form-check-label" for="cleanliness">Cleanliness</label>
              </div>
           </div>
-          <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
+          <button id="searchBtn" type="submit" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
          </div>
         </div>
+        </form>
         <p class="lead" style="overflow-x:auto; overflow-y:scroll;">
         <div style="height: 600px; overflow-y:scroll;">
           <table class="table">
