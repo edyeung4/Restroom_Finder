@@ -33,6 +33,11 @@ def emp_login():
 #        return jsonify(search_data)
 #    return "thanks!"
 
+@app.route('/employee_update', methods=['POST'])
+def emp_update():
+        print(request.form['restroomID'])
+        return request.form['restroomID']
+
 @app.route('/employee_index', methods=['GET','POST'])
 def emp_index():
     if request.method == 'POST':
