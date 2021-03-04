@@ -94,13 +94,12 @@
 	    <!-- Iterate over results returned from query -->
 	    {% for restroom in results %}
               <tr>
+                <td><input type="hidden" name="restroomID" form="form-{{loop.index}}" value={{restroom[0]}}>{{restroom[0]}}</td>
+                <td><input align="center" name="address" form="form-{{loop.index}}" type="text" value="{{restroom[1]}}" disabled="disabled"></td>
+		<td><input align="center" name="openHour" form="form-{{loop.index}}" type="time" value={{restroom[2]}} disabled="disabled"></td>
+                <td><input align="center" name="closeHour" form="form-{{loop.index}}" type="time" value={{restroom[3]}} disabled="disabled"></td>
                 <td>
-		    <input type="hidden" name="restroomID" form="form-{{loop.index}}" value={{restroom[0]}}>{{restroom[0]}}</td>
-                <td><input align="center" form="form-{{loop.index}}" type="text" value="{{restroom[1]}}" disabled="disabled"></td>
-		<td><input align="center" form="form-{{loop.index}}" type="time" value={{restroom[2]}} disabled="disabled"></td>
-                <td><input align="center" form="form-{{loop.index}}" type="time" value={{restroom[3]}} disabled="disabled"></td>
-                <td>
-                  <select align="center" form="form-{{loop.index}}" id="inputFree" class="form-control" disabled="disabled">
+                  <select align="center" name="free" form="form-{{loop.index}}" id="inputFree" class="form-control" disabled="disabled">
                     {% if restroom[4] == 1 %}
 		    	<option selected>T</option>
 			<option>F</option>
@@ -110,7 +109,7 @@
 		    {% endif %}
                   </select>
                 </td>
-                <td><input align="center" form="form-{{loop.index}}" type="text" value={{restroom[5]}} disabled="disabled"></td>
+                <td><input align="center" name="lastInspected" form="form-{{loop.index}}" type="text" value={{restroom[5]}} disabled="disabled"></td>
                 <td><input type="hidden" name="comments" form="form-{{loop.index}}" value={{restroom[6]}}>{{restroom[6]}}</td>
                 <td><input type="hidden" name="employeeID" form="form-{{loop.index}}" value={{restroom[7]}}>{{restroom[7]}}</td>
                 <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>

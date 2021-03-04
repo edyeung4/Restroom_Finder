@@ -35,8 +35,9 @@ def emp_login():
 
 @app.route('/employee_update', methods=['POST'])
 def emp_update():
-        print(request.form['restroomID'])
-        return request.form['restroomID']
+        id = request.form['restroomID']
+        address = request.form['address']
+        return address
 
 @app.route('/employee_index', methods=['GET','POST'])
 def emp_index():
