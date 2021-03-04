@@ -35,9 +35,31 @@ def emp_login():
 
 @app.route('/employee_update', methods=['POST'])
 def emp_update():
-        id = request.form['restroomID']
+        restroom_id = request.form['restroomID']
         address = request.form['address']
-        return address
+        street = address.split(',')[0]
+        city = address.split(',')[1]
+        state = address.split(',')[2]
+        country = address.split(',')[3]
+        open = request.form['openHour']
+        close = request.form['closeHour']
+        free = request.form['free']
+        if free == 'T':
+                free = 1
+        else:
+                free = 0
+        inspected = request.form['lastInspected']
+        comments = request.form['comments']
+        employeeID = request.form['employeeID']
+        
+        db_connection = connect_to_database()
+
+        query = 'UPDATE Locations, Restrooms, RestroomsEmployees SET Locations.street = %s, Locations.city = %s, Locations.state = %s, Locations.country = %s, Restrooms.openHour = %s, Restrooms.closeHour = %s, Restrooms.free = %s, RestroomsEmployees.inspectedAt = %s, RestroomsEmployees.comments = %s WHERE Restrooms.restroomID = %s AND Locations.locationID = (SELECT locationID FROM Restrooms WHERE restroomID = %s) AND RestroomsEmployees.restroomID = %s'
+        data = (street, city, state, country, open, close, free, inspected, comments, restroom_id, restroom_id, restroom_id)
+        result = execute_query(db_connection, query, data)
+
+        return redirect('/employee_index')
+	
 
 @app.route('/employee_index', methods=['GET','POST'])
 def emp_index():
