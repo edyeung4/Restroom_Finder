@@ -25,13 +25,15 @@ def emp_login():
     print('Accessing the login portal for employees.')
     return render_template('employee_login.html')
 
-#@app.route('/api/restroom_search', methods=['GET','POST'])
-#def rr_search():
-#    if request.method == 'POST':
-#        print('POST received.')
-#        search_data = request.form.get('search')
-#        return jsonify(search_data)
-#    return "thanks!"
+@app.route('/employee_delete', methods=['POST'])
+def emp_delete():
+        restroom_id = request.form['restroomID']
+        db_connection = connect_to_database()
+        query = 'DELETE FROM Restrooms WHERE restroomID = %s'
+        data = (restroom_id,)
+        result = execute_query(db_connection, query, data)
+
+        return redirect('/employee_index')
 
 @app.route('/employee_update', methods=['POST'])
 def emp_update():

@@ -76,6 +76,7 @@
         <div style="height: 600px; overflow-y:scroll;">
 	{% for restroom in results %}
 	 <form method="POST" id="form-{{loop.index}}" action="/employee_update"></form>
+         <form method="POST" id="delete-{{loop.index}}" action="/employee_delete"></form>
         {% endfor %}	
           <table class="table">
             <thead>
@@ -112,10 +113,8 @@
                 <td><input align="center" name="lastInspected" form="form-{{loop.index}}" type="text" value={{restroom[5]}} disabled="disabled"></td>
                 <td><input type="hidden" name="comments" form="form-{{loop.index}}" value={{restroom[6]}}>{{restroom[6]}}</td>
                 <td><input type="hidden" name="employeeID" form="form-{{loop.index}}" value={{restroom[7]}}>{{restroom[7]}}</td>
-                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
-                <!--<td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>-->
-                <!--<td><button form="form-{{loop.index}}" id="searchBtn" class="btn btn-secondary btn-search update" type="button"><span class="glyphicon glyphicon-search" >&nbsp;</span><span class="label-icon" >Update</span></button></td>-->
-		<td><input type="button" form="form-{{loop.index}}" class="btn btn-secondary update" value="Update"></td>
+                <td><input type="submit" form="form-{{loop.index}}" formaction="/employee_delete" class="btn btn-secondary" value="Delete"></td>
+		<td><input type="button" form="form-{{loop.index}}" formaction="/employee_update" class="btn btn-secondary update" value="Update"></td>
 	    </tr>
 	    {% endfor %}
             </tbody>
