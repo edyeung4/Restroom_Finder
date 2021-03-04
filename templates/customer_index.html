@@ -65,6 +65,9 @@
         </form>
         <p class="lead" style="overflow-x:auto; overflow-y:scroll;">
         <div style="height: 600px; overflow-y:scroll;">
+          {% for reviews in results %}
+          <form method="POST" id="form-{{loop.index}}" action="/customer_update"></form>
+          {% endfor %}	
           <table class="table">
             <thead>
               <tr>
@@ -83,14 +86,14 @@
             <tbody>
             {% for reviews in results %}
               <tr>
-                <th scope="row">{{reviews[0]}}</th>
-                
-                <td><input align="center" type="text" value="{{reviews[1]}}" disabled="disabled"></td>
+                <!-- <th name="reviewID" form="form-{{loop.index}}" value={{reviews[0]}}>{{reviews[0]}}</th> -->
+                <th><input type="hidden" name="reviewID" form="form-{{loop.index}}" value={{reviews[0]}}>{{reviews[0]}}</th>
+                <td><input align="center" type="text" name="address" form="form-{{loop.index}}" value="{{reviews[1]}}" disabled="disabled"></td>
 
                 
-                <td><input align="center" type="text" value={{reviews[2]}} disabled="disabled"></td>
+                <td><input align="center" type="text" name="overallRating" form="form-{{loop.index}}" value={{reviews[2]}} disabled="disabled"></td>
                 <td>
-                  <select align="center" id="inputState" class="form-control" disabled="disabled">
+                  <select align="center" id="inputState" name="cleanliness" form="form-{{loop.index}}" class="form-control" disabled="disabled">
                     {% if reviews[3] == 'Pristine' %}
                     <option>Choose...</option>
                     <option>Dirty</option>
@@ -109,12 +112,15 @@
                     {% endif %}
                   </select>
                 </td>
-                <td><input align="center" type="text" value="{{reviews[4]}}" disabled="disabled"></td>
+                <td><input align="center" type="text" name="comment" form="form-{{loop.index}}" value="{{reviews[4]}}" disabled="disabled"></td>
                 <td>{{reviews[5]}}</td>
                 <td>{{reviews[6]}}</td>
                 <td>{{reviews[7]}}</td>
-                <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td>
-                <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td>
+                <!-- <td><a class="btn btn-secondary delete" href="#" role="button">Delete</a></td> -->
+                <!-- <td><a class="btn btn-secondary update" href="#" role="button">Update</a></td> -->
+                <td><input type="submit" form="form-{{loop.index}}" formaction="/customer_delete" class="btn btn-secondary" value="Delete"></td>
+                <td><input type="button" form="form-{{loop.index}}" formaction="/customer_update" class="btn btn-secondary update" value="Update"></td>
+
               </tr>
             {% endfor %}
             </tbody>

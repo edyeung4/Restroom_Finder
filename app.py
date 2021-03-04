@@ -226,10 +226,10 @@ def cust_add():
         overall_rating = request.form["overallRating"]
         cleanliness = request.form["cleanliness"]
         comments = request.form["comments"]
-        print("restroomID =", restroom_id)
-        print("overallRating =", overall_rating)
-        print("cleanliness =", cleanliness)
-        print("comments =", comments)
+        # print("restroomID =", restroom_id)
+        # print("overallRating =", overall_rating)
+        # print("cleanliness =", cleanliness)
+        # print("comments =", comments)
 
         query = 'INSERT INTO Reviews (overallRating, cleanliness, comment, createdAt, restroomID, userID) VALUES (%s, %s, %s, CURDATE(), %s, 1)'
         data =(overall_rating, cleanliness, comments, restroom_id)
@@ -243,8 +243,39 @@ def cust_add():
         # print(results)
         return render_template('customer_add.html', results=results)
 
+@app.route('/customer_update', methods=['POST'])
+def cust_update():
+    reviewID = request.form["reviewID"]
+    overall_rating = request.form["overallRating"]
+    cleanliness = request.form["cleanliness"]
+    comment = request.form["comment"]
+    print("reviewID =", reviewID)
+    print("overallRating =", overall_rating)
+    print("cleanliness =", cleanliness)
+    print("comment =", comment)
+
+    db_connection = connect_to_database()
+
+    query = "UPDATE Reviews SET overallRating = %s, cleanliness = %s, comment = %s WHERE reviewID = %s"
+    data = (overall_rating, cleanliness, comment, reviewID)
+    execute_query(db_connection, query, data)
+    return redirect('/customer_index')
+    # print("customer update Post req")
+    # print(request.form['address'])
+    # return request.form['address']
+@app.route('/customer_delete', methods=['POST'])
+def cust_delete():
+    reviewID = request.form["reviewID"]
+
+    db_connection = connect_to_database()
+
+    query = "DELETE FROM Reviews WHERE reviewID = %s"
+    data = (reviewID,)
+    execute_query(db_connection, query, data)
+    return redirect('/customer_index')
+
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 56124)) 
+    port = int(os.environ.get('PORT', 56125)) 
     app.run(port=port)
 
     
