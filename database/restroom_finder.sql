@@ -121,7 +121,6 @@ CREATE TABLE `RestroomsEmployees` (
   `employeeID` int NOT NULL,
   `comments` varchar(255) DEFAULT NULL,
   `inspectedAt` datetime NOT NULL,
-  UNIQUE KEY `inspectedAt` (`inspectedAt`),
   KEY `restroomID` (`restroomID`),
   KEY `employeeID` (`employeeID`),
   CONSTRAINT `restroomsemployees_ibfk_1` FOREIGN KEY (`restroomID`) REFERENCES `Restrooms` (`restroomID`) ON DELETE CASCADE,
