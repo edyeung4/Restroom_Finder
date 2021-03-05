@@ -158,9 +158,10 @@ def emp_add():
         city = request.form["city"]
         state = request.form["state"]
         country = request.form["country"]
-        first_name = request.form["firstName"]
-        last_name = request.form["lastName"]
-        email = request.form["email"]
+        #first_name = request.form["firstName"]
+        #last_name = request.form["lastName"]
+        #email = request.form["email"]
+        
         # Need to insert into Locations first
         query = 'INSERT INTO Locations (street, city, state, country) VALUES (%s, %s, %s, %s)'
         data = (street, city, state, country)
@@ -172,8 +173,8 @@ def emp_add():
         execute_query(db_connection, query, data)
     
         # Finally insert into RestroomsEmployees
-        query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees where firstName = %s AND lastName = %s AND emailAddress = %s), %s, CURRENT_TIMESTAMP())'
-        data = (first_name, last_name, email, comments)
+        query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees ORDER BY lastLogin DESC LIMIT 1), %s, CURRENT_TIMESTAMP())'
+        data = (comments,)
         execute_query(db_connection, query,data)    
 
         return redirect('/employee_index', code=302)
