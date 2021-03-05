@@ -25,6 +25,29 @@ def emp_login():
     print('Accessing the login portal for employees.')
     return render_template('employee_login.html')
 
+@app.route('/employee_auth', methods=['POST'])
+def emp_auth():
+    '''Check if Employee is existing or not. If not, create Employee. If existing, update lastLogin'''
+    first = request.form['firstName']
+    last = request.form['lastName']
+    email = request.form['email']
+    db_connection = connect_to_database()
+    query = 'SELECT employeeID FROM Employees WHERE firstName = %s AND lastName = %s AND emailAddress = %s'
+    data = (first, last, email)
+    result = execute_query(db_connection, query, data).fetchall()
+    
+    if len(result) == 0:
+        # Employee not found, INSERT new Employee
+        query = 'INSERT INTO Employees (firstName, lastName, emailAddress) VALUES (%s, %s, %s);'
+        data = (first, last, email)
+        execute_query(db_connection, query, data)
+        return redirect('/employee_index')
+    else:
+        query = 'UPDATE Employees SET lastLogin = current_timestamp() WHERE employeeID = (SELECT employeeID FROM Employees WHERE firstName = %s AND lastName = %s AND emailAddress = %s)'
+        data = (first, last, email)
+        execute_query(db_connection, query, data)
+        return redirect('/employee_index')
+
 @app.route('/employee_delete', methods=['POST'])
 def emp_delete():
         restroom_id = request.form['restroomID']
