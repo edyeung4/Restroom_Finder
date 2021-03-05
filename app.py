@@ -312,14 +312,14 @@ def cust_login_verify():
     print(results)
 
     if results is None:
-        # Customer not found create new employee
+        # Customer not found create new customer and log in
         print("inserting new USER")
         query = 'INSERT INTO Users (firstName, lastName, emailAddress) VALUES (%s, %s, %s);'
         data = (first_name, last_name, email)
         execute_query(db_connection, query, data)
         return redirect('/customer_index')
     else:
-        # query = 'UPDATE Users SET '
+        # Customer is found and logged in
         return redirect('/customer_index')
 
 
