@@ -111,7 +111,7 @@
                   </select>
                 </td>
                 <td><input align="center" name="lastInspected" form="form-{{loop.index}}" type="text" value={{restroom[5]}} disabled="disabled"></td>
-                <td><input type="hidden" name="comments" form="form-{{loop.index}}" value={{restroom[6]}}>{{restroom[6]}}</td>
+                <td><input align="center" type="text" name="comment" form="form-{{loop.index}}" value="{{ restroom[6] }}" disabled="disabled"></td>
                 <td><input type="hidden" name="employeeID" form="form-{{loop.index}}" value={{restroom[7]}}>{{restroom[7]}}</td>
                 <td><input type="submit" form="form-{{loop.index}}" formaction="/employee_delete" class="btn btn-secondary" value="Delete"></td>
 		<td><input type="button" form="form-{{loop.index}}" formaction="/employee_update" class="btn btn-secondary update" value="Update"></td>

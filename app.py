@@ -25,6 +25,29 @@ def emp_login():
     print('Accessing the login portal for employees.')
     return render_template('employee_login.html')
 
+@app.route('/employee_auth', methods=['POST'])
+def emp_auth():
+    '''Check if Employee is existing or not. If not, create Employee. If existing, update lastLogin'''
+    first = request.form['firstName']
+    last = request.form['lastName']
+    email = request.form['email']
+    db_connection = connect_to_database()
+    query = 'SELECT employeeID FROM Employees WHERE firstName = %s AND lastName = %s AND emailAddress = %s'
+    data = (first, last, email)
+    result = execute_query(db_connection, query, data).fetchall()
+    
+    if len(result) == 0:
+        # Employee not found, INSERT new Employee
+        query = 'INSERT INTO Employees (firstName, lastName, emailAddress) VALUES (%s, %s, %s);'
+        data = (first, last, email)
+        execute_query(db_connection, query, data)
+        return redirect('/employee_index')
+    else:
+        query = 'UPDATE Employees SET lastLogin = current_timestamp() WHERE employeeID = (SELECT employeeID FROM Employees WHERE firstName = %s AND lastName = %s AND emailAddress = %s)'
+        data = (first, last, email)
+        execute_query(db_connection, query, data)
+        return redirect('/employee_index')
+
 @app.route('/employee_delete', methods=['POST'])
 def emp_delete():
         restroom_id = request.form['restroomID']
@@ -135,9 +158,10 @@ def emp_add():
         city = request.form["city"]
         state = request.form["state"]
         country = request.form["country"]
-        first_name = request.form["firstName"]
-        last_name = request.form["lastName"]
-        email = request.form["email"]
+        #first_name = request.form["firstName"]
+        #last_name = request.form["lastName"]
+        #email = request.form["email"]
+        
         # Need to insert into Locations first
         query = 'INSERT INTO Locations (street, city, state, country) VALUES (%s, %s, %s, %s)'
         data = (street, city, state, country)
@@ -149,8 +173,8 @@ def emp_add():
         execute_query(db_connection, query, data)
     
         # Finally insert into RestroomsEmployees
-        query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees where firstName = %s AND lastName = %s AND emailAddress = %s), %s, CURRENT_TIMESTAMP())'
-        data = (first_name, last_name, email, comments)
+        query = 'INSERT INTO RestroomsEmployees (restroomID, employeeID, comments, inspectedAt) VALUES ((SELECT max(restroomID) FROM Restrooms), (SELECT employeeID FROM Employees ORDER BY lastLogin DESC LIMIT 1), %s, CURRENT_TIMESTAMP())'
+        data = (comments,)
         execute_query(db_connection, query,data)    
 
         return redirect('/employee_index', code=302)
