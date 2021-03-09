@@ -287,6 +287,7 @@ def cust_update():
     # print("customer update Post req")
     # print(request.form['address'])
     # return request.form['address']
+
 @app.route('/customer_delete', methods=['POST'])
 def cust_delete():
     reviewID = request.form["reviewID"]
@@ -297,6 +298,30 @@ def cust_delete():
     data = (reviewID,)
     execute_query(db_connection, query, data)
     return redirect('/customer_index')
+
+@app.route('/customer_login_verify', methods=['POST'])
+def cust_login_verify():
+    first_name = request.form["firstName"]
+    last_name = request.form["lastName"]
+    email = request.form["inputEmail"]
+    
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Users WHERE firstName = "'%s'" and lastName = "'%s'" and emailAddress = "'%s'""
+    data = (first_name, last_name, email)
+    results = execute_query(db_connection, query, data).fetchone()
+    print(results)
+
+    if results is None:
+        # Customer not found create new customer and log in
+        print("inserting new USER")
+        query = 'INSERT INTO Users (firstName, lastName, emailAddress) VALUES (%s, %s, %s);'
+        data = (first_name, last_name, email)
+        execute_query(db_connection, query, data)
+        return redirect('/customer_index')
+    else:
+        # Customer is found and logged in
+        return redirect('/customer_index')
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 56125)) 
