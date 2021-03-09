@@ -74,7 +74,7 @@ def emp_update():
         else:
                 free = 0
         inspected = request.form['lastInspected']
-        comments = request.form['comments']
+        comments = request.form['comment']
         employeeID = request.form['employeeID']
         
         db_connection = connect_to_database()
