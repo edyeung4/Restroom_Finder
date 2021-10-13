@@ -1,5 +1,5 @@
-# CS340_Project Restroom Finder
-CS340 Semester Project - Restroom Finder
+# Restroom Finder
+Restroom Finder - CS340 Semester Project
 
-This repo contains files for CS 340 semester project - Restroom Finder.
+This repo contains files for Restroom Finder - CS340 Semester Project.
 Files consist of website .html, .css, .js and .sql
